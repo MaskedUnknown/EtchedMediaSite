@@ -85,7 +85,7 @@ function App() {
                         </div>
 
                         <p className="about-bio-text">
-                            Welcome to the official Etched Media site! Etched Media does writing, video games, digital illustrations, 2d-3d animation, sound design & music production; With video games representing our densest product (encompassing multi media types). This site serves as a Portfolio, Calling card, and hub for all of our store page links.
+                            Welcome to the official Etched Media site! Etched Media does writing, develops video games, 2d digital illustrations & 3d modeling, 2d-3d animation, sound design & music production; With video games representing our densest product (encompassing multi media types). This site serves as a Portfolio, Calling card, and hub for all of our store page links.
                         </p>
 
                         {/* Direct Communications Matrix Row */}
