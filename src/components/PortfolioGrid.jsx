@@ -22,22 +22,41 @@ const ALBUMS_MAP = {};
 
 RAW_FILES.forEach(file => {
     const { rootCategory, parentFolder, fileName, url } = file;
+    const ext = fileName.split('.').pop().toLowerCase();
+    const isImage = ['png', 'jpg', 'jpeg', 'gif'].includes(ext);
+    const isAudio = ['mp3', 'wav'].includes(ext);
+
+    // Group files into nested music/sfx album directories
     if ((rootCategory === 'music' || rootCategory === 'sfx') && parentFolder !== rootCategory) {
         const albumKey = `${rootCategory}-${parentFolder}`;
+
         if (!ALBUMS_MAP[albumKey]) {
             ALBUMS_MAP[albumKey] = {
-                id: albumKey, category: rootCategory, albumFolderName: parentFolder,
+                id: albumKey,
+                category: rootCategory,
+                albumFolderName: parentFolder,
                 title: parentFolder.replace(/[_-]/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
-                cover: null, tracks: []
+                cover: null,
+                tracks: []
             };
         }
-        if (fileName.toLowerCase().startsWith('cover.')) {
+
+        // ── 🎯 FIXED: AUTOMATED ALBUM ART ASSIGNMENT ──
+        // 1. Give absolute priority to explicit files named 'cover'
+        if (fileName.toLowerCase().startsWith('cover.') && isImage) {
             ALBUMS_MAP[albumKey].cover = url;
-        } else if (['mp3', 'wav'].includes(fileName.split('.').pop().toLowerCase())) {
+        }
+        // 2. Fallback: If no explicit cover is logged yet, capture the very first picture file found in this folder partition!
+        else if (!ALBUMS_MAP[albumKey].cover && isImage) {
+            ALBUMS_MAP[albumKey].cover = url;
+        }
+        // Handle standard audio tracks appending rules
+        else if (isAudio) {
             const trackTitle = fileName.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ").replace(/\b\w/g, c => c.toUpperCase());
             ALBUMS_MAP[albumKey].tracks.push({ title: trackTitle, fileName, url });
         }
     } else {
+        // Standard asset parsing block (Games, Art, Animation, Writing)
         const title = fileName.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ").replace(/\b\w/g, c => c.toUpperCase());
         STANDALONE_ASSETS.push({ id: fileName, title, category: rootCategory, fileName, url });
     }
@@ -45,7 +64,6 @@ RAW_FILES.forEach(file => {
 
 const COMPLETE_ALBUMS_LIST = Object.values(ALBUMS_MAP);
 
-// 🎯 Intercepting our new prop function input arguments here
 export function PortfolioGrid({ onTriggerLightbox }) {
     const [activeCategory, setActiveCategory] = useState('all');
     const [selectedGame, setSelectedGame] = useState(null);
@@ -84,6 +102,7 @@ export function PortfolioGrid({ onTriggerLightbox }) {
                 {displayAlbums.map((album) => (
                     <div key={album.id} className="vinyl-album-capsule" onClick={() => setSelectedAlbum(album)}>
                         <div className="vinyl-sleeve-viewport">
+                            {/* 🎯 FIXED: Consumes our automated custom cover image url seamlessly */}
                             <img src={album.cover || '/favicon.ico'} className="album-sleeve-art" alt="" />
                             <div className="vinyl-record-disc"><div className="vinyl-center-label"></div></div>
                         </div>
@@ -104,7 +123,6 @@ export function PortfolioGrid({ onTriggerLightbox }) {
                             if (item.category === 'games') {
                                 setSelectedGame(item);
                             } else {
-                                // 🎯 TRIGGER: Sending data straight out to the root App layout frame instead!
                                 onTriggerLightbox(item);
                             }
                         }}

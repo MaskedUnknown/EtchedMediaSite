@@ -1,12 +1,7 @@
 import React from 'react';
+import { playSound } from '../services/audio'; // <-- Import the sound dictionary
 import './DynamicButton.css';
 
-/**
- * Modular Dynamic Button Service
- * @param {String} variant - 'primary', 'secondary', or 'danger' styling profiles
- * @param {Boolean} showBlobs - Toggles the organic canvas background animation
- * @param {ReactNode} children - Button text or inner elements
- */
 export function DynamicButton({
     variant = 'primary',
     showBlobs = true,
@@ -15,14 +10,19 @@ export function DynamicButton({
     children,
     ...props
 }) {
+
+    const handleExtendedClick = (e) => {
+        playSound.click(); // Automatically fire sound click clip cleanly behind the scenes
+        if (onClick) onClick(e); // Continue routing native click events safely
+    };
+
     return (
         <button
             type={type}
             className={`dynamic-btn btn-${variant}`}
-            onClick={onClick}
+            onClick={handleExtendedClick} /* Swapped to our integrated sound click click utility */
             {...props}
         >
-            {/* Dynamic Text Layer */}
             <span className="btn-label">{children}</span>
 
             {/* Dynamic Blob Effect Layer */}

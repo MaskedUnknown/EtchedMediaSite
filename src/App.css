@@ -1,4 +1,63 @@
 ﻿/* ==========================================================================
+   🖥️ STEP 4: RESPONSIVE WALLPAPER GRAPHICS CANVAS STYLES
+   ========================================================================== */
+
+.desktop-wallpaper-canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Keeps your custom image dead center of any monitor layout */
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Crucial: Allows window dragging right over the canvas without freezing cursor tracking */
+    user-select: none;
+    z-index: 0; /* Layer depth pinned to absolute base layer, safely underneath everything else */
+    overflow: hidden;
+}
+
+/* Custom Image Asset Core Configuration */
+.wallpaper-brand-image {
+    width: auto;
+    height: auto;
+    max-width: 75%; /* Keeps your logo bounded beautifully with a soft margin from screen edges */
+    max-height: 70%;
+    object-fit: contain; /* Prevents stretching or distorting the aspect curves of your logo artwork */
+    /* ── 🎭 VISUAL INTERACTION DEPTHS ── */
+    /* Adjust this opacity slider so your background acts as a subtle watermark 
+     that doesn't distract from your interactive portfolio widgets */
+    opacity: 0.05;
+    transition: opacity 0.25s ease;
+}
+
+/* Optional Dark Mode optimization adjustment for high contrast */
+[data-theme="dark"] .wallpaper-brand-image {
+    opacity: 0.24;
+}
+.desktop-header-logo {
+    object-fit: contain;
+    display: block;
+    /* Added a smooth transition animation matching your theme switch timing layout */
+    transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+/* ── ☀️ LIGHT MODE FILTER OVERRIDES ── */
+/* 
+   When the root tag changes to data-theme="light", we intercept both elements 
+   and automatically invert their pixel colors so they display perfectly on a light canvas!
+*/
+[data-theme="light"] .wallpaper-brand-image {
+    filter: invert(1);
+    opacity: 0.12; /* Bumping the transparency up slightly so it retains strong legibility on light backgrounds */
+}
+
+[data-theme="light"] .desktop-header-logo {
+    filter: invert(1);
+    opacity: 0.85;
+}
+/* ==========================================================================
    Desktop Grid Canvas Framework
    ========================================================================== */
 
@@ -193,3 +252,120 @@
         font-weight: 500;
         font-family: var(--font-interface);
     }
+
+/* ==========================================================================
+   📱 TASK 3: MOBILE INTERFACE SYSTEM OVERRIDES
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* ── 💻 1. LOCK MOBILE CANVAS BOUNDARIES ── */
+    .desktop-environment {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        height: 100svh; /* Using svh to account for mobile address bars */
+        overflow: hidden;
+    }
+
+    /* Compact the Top Brand Header */
+    .desktop-header-controls {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+        margin-bottom: 12px;
+    }
+
+    .desktop-brand-title {
+        font-size: 1.5rem !important;
+    }
+
+    /* ── 📦 2. CONVERT FLOATING WINDOWS TO RESPONSIVE MOBILE FRAMES ── */
+    .window-frame {
+        /* Break out of absolute desktop tracking coordinates entirely */
+        position: relative !important;
+        transform: none !important;
+        /* Force windows to expand fully within mobile viewport boundaries */
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: 40vh !important; /* Stack them uniformly in portrait view */
+
+        margin-bottom: 16px;
+        box-shadow: var(--shadow-window-idle) !important;
+    }
+
+    /* Disable mouse drag pointer icons on touch surfaces */
+    .window-titlebar {
+        cursor: default !important;
+        padding: 10px;
+    }
+
+    .window-content {
+        padding: 12px;
+    }
+
+    /* ── 🗂️ 3. OPTIMIZE GRIDS FOR PHONE PORTRAIT VIEWPORTS ── */
+    .portfolio-cards-container {
+        grid-template-columns: 1fr !important; /* Force cards into a clean vertical touch feed */
+        gap: 12px;
+    }
+
+    .portfolio-filter-tray {
+        gap: 4px;
+        overflow-x: auto; /* Allow category buttons to be swiped horizontally on small screens */
+        white-space: nowrap;
+        padding-bottom: 6px;
+    }
+
+    /* Hide close buttons on mobile to avoid broken layouts—minimize/re-open handles visibility */
+    .window-btn.btn-close {
+        display: none !important;
+    }
+
+    /* Pin recovery taskbar tightly to the base */
+    .desktop-taskbar {
+        position: static;
+        transform: none;
+        margin-top: auto;
+        padding-top: 12px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* ── 🎭 4. FULLSCREEN LIGHTBOX SIZING FOR PHONE SCREENS ── */
+    .lightbox-content-capsule {
+        padding: 20px;
+    }
+}
+
+/* ==========================================================================
+   🔄 5. AUTOMATED LANDSCAPE ORIENTATION TILT HANDLING
+   ========================================================================== */
+@media (max-width: 932px) and (orientation: landscape) {
+    .desktop-environment {
+        padding: 8px;
+        overflow-y: auto !important; /* Turn on site scrolling only during phone rotation landscape tilt */
+    }
+
+    .desktop-header-controls {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    /* Allow containers to stack side-by-side or naturally scroll downward when flat */
+    .window-frame {
+        position: relative !important;
+        transform: none !important;
+        width: 100% !important;
+        max-height: none !important;
+        height: auto !important;
+    }
+
+    .portfolio-cards-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    }
+
+    .lightbox-content-capsule {
+        padding: 10px;
+    }
+}

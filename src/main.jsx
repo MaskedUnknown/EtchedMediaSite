@@ -9,3 +9,9 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
+document.addEventListener('touchmove', function (e) {
+    // If the user is dragging the main background workspace canvas area, prevent the scroll bounce
+    if (e.target.classList.contains('desktop-environment') || e.target.classList.contains('desktop-wallpaper-canvas')) {
+        e.preventDefault();
+    }
+}, { passive: false });
