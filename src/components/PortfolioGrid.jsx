@@ -5,28 +5,54 @@ import { GameShowcase } from './GameShowcase';
 import { AudioAlbumView } from './AudioAlbumView';
 
 // ── 🚀 AUTOMATED VITE INVENTORY CRAWLER ──
-const assetModules = import.meta.glob('/src/assets/**/*.{png,jpg,jpeg,gif,mp3,wav,mp4,mov,pdf}', { eager: true });
+// We instruct Vite to look for media assets alongside our new json data blocks
+const assetModules = import.meta.glob('/src/assets/**/*.{png,jpg,jpeg,gif,mp3,wav,mp4,mov,pdf,json}', { eager: true });
 
 const RAW_FILES = Object.keys(assetModules).map(filePath => {
     const pathParts = filePath.split('/');
     const fileName = pathParts[pathParts.length - 1];
     const parentFolder = pathParts[pathParts.length - 2];
+
     const assetsIndex = pathParts.indexOf('assets');
     const rootCategory = assetsIndex !== -1 ? pathParts[assetsIndex + 1] : '';
 
-    return { fileName, parentFolder, rootCategory, url: assetModules[filePath].default || assetModules[filePath] };
+    // Extract the raw evaluated JSON payload object if this is an info file
+    const isJson = fileName.toLowerCase() === 'info.json';
+    const jsonData = isJson ? assetModules[filePath].default || assetModules[filePath] : null;
+
+    return {
+        fileName,
+        parentFolder,
+        rootCategory,
+        jsonData, // Passes the parsed JSON object through the map
+        url: assetModules[filePath].default || assetModules[filePath]
+    };
 });
 
 const STANDALONE_ASSETS = [];
 const ALBUMS_MAP = {};
+const METADATA_LINKS = {};
 
+// ── PHASE 1: HARVEST LINKS DIRECTLY FROM THE INSIDE OF JSON FILES ──
+RAW_FILES.forEach(file => {
+    const { rootCategory, parentFolder, fileName, jsonData } = file;
+    if (fileName.toLowerCase() === 'info.json' && jsonData && jsonData.url) {
+        const linkKey = `${rootCategory}-${parentFolder}`;
+        METADATA_LINKS[linkKey] = jsonData.url.trim(); // Safely captures the clean link string from the text file
+    }
+});
+
+// ── PHASE 2: BIND DYNAMIC ACCENTS TO BUTTON BLOCKS ──
 RAW_FILES.forEach(file => {
     const { rootCategory, parentFolder, fileName, url } = file;
     const ext = fileName.split('.').pop().toLowerCase();
+
+    if (ext === 'json') return; // Skip showing the metadata file as its own visual grid tile card
+
     const isImage = ['png', 'jpg', 'jpeg', 'gif'].includes(ext);
     const isAudio = ['mp3', 'wav'].includes(ext);
+    const folderLinkKey = `${rootCategory}-${parentFolder}`;
 
-    // Group files into nested music/sfx album directories
     if ((rootCategory === 'music' || rootCategory === 'sfx') && parentFolder !== rootCategory) {
         const albumKey = `${rootCategory}-${parentFolder}`;
 
@@ -37,28 +63,30 @@ RAW_FILES.forEach(file => {
                 albumFolderName: parentFolder,
                 title: parentFolder.replace(/[_-]/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
                 cover: null,
+                // Pulls the harvested url destination from our map array database
+                externalUrl: METADATA_LINKS[folderLinkKey] || 'https://bandlab.com',
                 tracks: []
             };
         }
 
-        // ── 🎯 FIXED: AUTOMATED ALBUM ART ASSIGNMENT ──
-        // 1. Give absolute priority to explicit files named 'cover'
         if (fileName.toLowerCase().startsWith('cover.') && isImage) {
             ALBUMS_MAP[albumKey].cover = url;
-        }
-        // 2. Fallback: If no explicit cover is logged yet, capture the very first picture file found in this folder partition!
-        else if (!ALBUMS_MAP[albumKey].cover && isImage) {
+        } else if (!ALBUMS_MAP[albumKey].cover && isImage) {
             ALBUMS_MAP[albumKey].cover = url;
-        }
-        // Handle standard audio tracks appending rules
-        else if (isAudio) {
+        } else if (isAudio) {
             const trackTitle = fileName.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ").replace(/\b\w/g, c => c.toUpperCase());
             ALBUMS_MAP[albumKey].tracks.push({ title: trackTitle, fileName, url });
         }
     } else {
-        // Standard asset parsing block (Games, Art, Animation, Writing)
         const title = fileName.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-        STANDALONE_ASSETS.push({ id: fileName, title, category: rootCategory, fileName, url });
+        STANDALONE_ASSETS.push({
+            id: fileName,
+            title,
+            category: rootCategory,
+            fileName,
+            externalUrl: METADATA_LINKS[folderLinkKey] || 'https://amazon.com',
+            url
+        });
     }
 });
 
@@ -80,6 +108,26 @@ export function PortfolioGrid({ onTriggerLightbox }) {
         const ext = item.fileName.split('.').pop().toLowerCase();
         if (['png', 'jpg', 'jpeg', 'gif'].includes(ext)) return <img src={item.url} alt={item.title} className="inline-media-img" loading="lazy" />;
         if (['mp4', 'mov'].includes(ext)) return <video muted loop playsInline autoPlay className="inline-media-video" src={item.url} />;
+
+        // ── 📄 WRITING: INTERACTIVE HYPERLINK GENERATOR CARD ENGINE ──
+        if (item.category === 'writing') {
+            return (
+                <div className="writing-book-capsule-card">
+                    <span className="book-spine-decor">📚</span>
+                    {/* Clickable text redirect name link appended with your unique amazon endpoints */}
+                    <a
+                        href={item.externalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="writing-clickable-title-link"
+                        onClick={(e) => e.stopPropagation()} // Stop click from popping up empty lightbox windows
+                    >
+                        Open Publication Hub ↗
+                    </a>
+                </div>
+            );
+        }
+
         return <span className="inline-file-icon">📄 Document</span>;
     };
 
@@ -102,7 +150,6 @@ export function PortfolioGrid({ onTriggerLightbox }) {
                 {displayAlbums.map((album) => (
                     <div key={album.id} className="vinyl-album-capsule" onClick={() => setSelectedAlbum(album)}>
                         <div className="vinyl-sleeve-viewport">
-                            {/* 🎯 FIXED: Consumes our automated custom cover image url seamlessly */}
                             <img src={album.cover || '/favicon.ico'} className="album-sleeve-art" alt="" />
                             <div className="vinyl-record-disc"><div className="vinyl-center-label"></div></div>
                         </div>
@@ -122,7 +169,7 @@ export function PortfolioGrid({ onTriggerLightbox }) {
                         onClick={() => {
                             if (item.category === 'games') {
                                 setSelectedGame(item);
-                            } else {
+                            } else if (item.category !== 'writing') {
                                 onTriggerLightbox(item);
                             }
                         }}

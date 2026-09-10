@@ -1,10 +1,7 @@
 ﻿import React from 'react';
-import { DynamicButton } from './DynamicButton';
 import './AudioAlbumView.css';
 
 export function AudioAlbumView({ album, onBack }) {
-    // Safe dynamic description context mock helper. 
-    // In production, you can drop a local descriptive .txt or JSON inside the folder to map descriptions dynamically!
     const getMockAlbumDescription = () => {
         if (album.category === 'music') {
             return `Official music release catalog compiling full orchestration. Mastered directly at Etched Media workflows. Listen or view purchase details on external services via the link dashboard below.`;
@@ -12,13 +9,9 @@ export function AudioAlbumView({ album, onBack }) {
         return `Production audio assets repository including uncompressed spatial mixing matrices. Optimized for immediate game engine implementation.`;
     };
 
-    // Mock safety checkout routing path target
-    const targetBandlabUrl = "https://bandlab.com";
-
     return (
         <div className="audio-album-hub-view">
 
-            {/* Top Controls Row */}
             <div className="album-hub-nav">
                 <button className="hub-back-btn" onClick={onBack}>← Back to Audio Rack</button>
                 <span className="hub-category-tag">{album.category.toUpperCase()} // REGISTRY DIRECTORY</span>
@@ -26,18 +19,17 @@ export function AudioAlbumView({ album, onBack }) {
 
             <div className="album-split-body">
 
-                {/* LEFT COLUMN: FIXED SLEEVE FRAME */}
                 <div className="album-artwork-column">
                     <div className="artwork-sleeve-frame">
                         <img src={album.cover || '/favicon.ico'} className="artwork-main-img" alt="" />
                     </div>
 
-                    {/* EXTERNAL BRAND PLATFORM LINK REGISTRY */}
                     <div className="album-external-link-card">
                         <h5>Production Distribution Marketplace</h5>
                         <p>Support this production release package directly on external hosting systems:</p>
+                        {/* 🎯 FIXED: Consuming your individual custom URL location properties smoothly */}
                         <a
-                            href={targetBandlabUrl}
+                            href={album.externalUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="album-bandlab-link-btn"
@@ -47,7 +39,6 @@ export function AudioAlbumView({ album, onBack }) {
                     </div>
                 </div>
 
-                {/* RIGHT COLUMN: REVENUE DESCRIPTION & AUDIO RACK TRACKLIST */}
                 <div className="album-tracks-column">
                     <div className="album-meta-header">
                         <h2 className="album-main-title">{album.title}</h2>
@@ -56,7 +47,6 @@ export function AudioAlbumView({ album, onBack }) {
 
                     <p className="album-paragraph-desc">{getMockAlbumDescription()}</p>
 
-                    {/* DYNAMIC SOUND MIXER RACK LIST */}
                     <div className="audio-tracklist-rack custom-scrollbar">
                         <h3>Archived Track Manifest ({album.tracks.length})</h3>
 
@@ -67,7 +57,6 @@ export function AudioAlbumView({ album, onBack }) {
                                     <span className="track-row-title" title={track.fileName}>{track.title}</span>
                                 </div>
 
-                                {/* Embedded HTML5 Console Player Frame */}
                                 <audio controls className="track-row-player-widget" preload="none">
                                     <source src={track.url} type="audio/mpeg" />
                                 </audio>
@@ -75,7 +64,7 @@ export function AudioAlbumView({ album, onBack }) {
                         ))}
 
                         {album.tracks.length === 0 && (
-                            <p className="empty-track-notice">No uncompressed .MP3 or .WAV assets discovered within this subdirectory container partition yet.</p>
+                            <p className="empty-track-notice">No uncompressed assets discovered within this subdirectory container partition yet.</p>
                         )}
                     </div>
                 </div>

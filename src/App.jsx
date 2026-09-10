@@ -92,6 +92,10 @@ function App() {
                         <div className="about-contact-matrix">
                             <h4>🎛️ Terminal Registry / Contact</h4>
                             <div className="contact-row">
+                                <strong>Site & business owner:</strong>
+                                <span>Christian J. Dan</span>
+                            </div>
+                            <div className="contact-row">
                                 <strong>Direct Email:</strong>
                                 <a href="mailto:contact@etchedmedia.com">sketcedstudios@gmail.com</a>
                             </div>

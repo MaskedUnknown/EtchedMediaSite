@@ -52,7 +52,8 @@ const playEngineAsset = (audioPath, soundId) => {
 // ── 🎛️ PUBLIC TRIGGER MATRIX ──
 // Replace the relative strings down below with your exact filenames inside src/assets/sounds/
 export const playSound = {
-    click: () => playEngineAsset('/src/assets/sounds/click.mp3', 'click'),
-    open: () => playEngineAsset('/src/assets/sounds/open.mp3', 'open'),
-    close: () => playEngineAsset('/src/assets/sounds/close.mp3', 'close'),
+    // Point directly to your public folder's subdirectories using flat paths
+    click: () => playEngineAsset('/sounds/click.mp3', 'click'),
+    open: () => playEngineAsset('/sounds/open.mp3', 'open'),
+    close: () => playEngineAsset('/sounds/close.mp3', 'close'),
 };
