@@ -125,11 +125,11 @@
 
 .about-profile-hero h3 {
     margin: 0;
-    font-size: 24px;
+    font-size: 44px;
 }
 
 .profile-subtitle-tag {
-    font-size: 13px;
+    font-size: 19px;
     color: var(--bg-window-active);
     font-weight: 700;
     text-transform: uppercase;
@@ -137,7 +137,7 @@
 }
 
 .about-bio-text {
-    font-size: 15px;
+    font-size: 20px;
     line-height: 1.5;
 }
 
@@ -154,7 +154,7 @@
 }
 
 .about-contact-matrix h4 {
-    font-size: 15px;
+    font-size: 25px;
     margin-bottom: 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     padding-bottom: 4px;
@@ -167,7 +167,7 @@
 .contact-row {
     display: flex;
     justify-content: space-between;
-    font-size: 14px;
+    font-size: 29px;
     padding: 4px 0;
 }
 

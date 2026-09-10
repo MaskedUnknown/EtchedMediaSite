@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect } from 'react';
 
 /**
- * Hook to manage smooth desktop-window drag physics
+ * Hook to manage smooth desktop-window drag physics with viewport collision walls
  * @param {Object} initialPosition - Starting x and y coordinates
  */
 export function useDrag(initialPosition = { x: 100, y: 100 }) {
@@ -13,13 +13,18 @@ export function useDrag(initialPosition = { x: 100, y: 100 }) {
         // Only drag with left click
         if (e.button !== 0) return;
 
+        // Find the actual structural window frame container being dragged
+        const windowFrame = e.currentTarget.closest('.window-frame');
+        if (!windowFrame) return;
+
         setIsDragging(true);
         setDragStart({
             x: e.clientX - position.x,
-            y: e.clientY - position.y
+            y: e.clientY - position.y,
+            width: windowFrame.offsetWidth,  // Capture physical layout dimensions dynamically
+            height: windowFrame.offsetHeight
         });
 
-        // Prevent default browser text selection highlighting while dragging
         e.preventDefault();
     };
 
@@ -27,12 +32,22 @@ export function useDrag(initialPosition = { x: 100, y: 100 }) {
         const handleMouseMove = (e) => {
             if (!isDragging) return;
 
-            // Calculate new window boundary location
+            // 1. Calculate raw target location coordinates
             let newX = e.clientX - dragStart.x;
             let newY = e.clientY - dragStart.y;
 
-            // Bound the window inside the viewport limits
-            if (newY < 0) newY = 0; // Prevent hiding title bar under top edge
+            // 2. 🧱 DYNAMIC VIEWPORT MARGIN LIMIT CALCULATIONS
+            // Finds the absolute maximum right and bottom pixel limits based on browser window size
+            const maxLeft = 0;
+            const maxTop = 0;
+            const maxRight = window.innerWidth - dragStart.width;
+            const maxBottom = window.innerHeight - dragStart.height;
+
+            // 3. MATH CLAMPING: Lock the positions securely within our boundary frames
+            if (newX < maxLeft) newX = maxLeft;     // Snap to Left screen edge wall
+            if (newX > maxRight) newX = maxRight;   // Snap to Right screen edge wall
+            if (newY < maxTop) newY = maxTop;       // Snap to Top screen edge wall
+            if (newY > maxBottom) newY = maxBottom; // Snap to Bottom screen edge wall
 
             setPosition({ x: newX, y: newY });
         };
