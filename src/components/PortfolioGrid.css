@@ -1,0 +1,316 @@
+﻿/* Append these rules to the bottom of your src/components/PortfolioGrid.css file */
+
+.vinyl-album-capsule {
+    background: rgba(0, 0, 0, 0.02);
+    border: var(--window-stroke);
+    border-radius: var(--border-radius-element);
+    padding: 14px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform 0.15s ease, box-shadow 0.2s;
+}
+
+[data-theme="dark"] .vinyl-album-capsule {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* ==========================================================================
+   📦 THE MAIN CARD GRID SYSTEM (Side-by-Side Arrangement)
+   ========================================================================== */
+
+.portfolio-grid-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 16px;
+}
+
+.portfolio-filter-tray {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .portfolio-filter-tray {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ── FIXED: Restores your beautiful side-by-side card layout tiles ── */
+.portfolio-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    padding-right: 4px;
+}
+
+.portfolio-media-card {
+    background: rgba(0, 0, 0, 0.02);
+    border: var(--window-stroke);
+    border-radius: var(--border-radius-element);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    transition: transform 0.15s ease, box-shadow 0.2s;
+}
+
+[data-theme="dark"] .portfolio-media-card {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.portfolio-media-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-inner-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.card-header-tag {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--bg-window-active);
+    letter-spacing: 1px;
+}
+
+.card-item-title {
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── 🖼️ NESTED PREVIEW BOX VIEWPORTS ── */
+.media-preview-viewport {
+    width: 100%;
+    height: 140px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: var(--border-radius-element);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .media-preview-viewport {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Thumbnails fit within card viewport limits */
+.inline-media-img, .inline-media-video {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+    display: block;
+}
+
+.card-asset-path code {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.empty-notice {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   🖥️ TRUE FULLSCREEN MAXIMIZED OVERLAY HUB
+   ========================================================================== */
+
+.global-lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(12, 12, 15, 0.95);
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: overlayFadeIn 0.15s ease-out;
+}
+
+@keyframes overlayFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ── 🚀 FIXED: Absolute Viewport Constraint Box ── */
+.lightbox-content-capsule {
+    position: absolute; /* Changed to absolute to lock dimensions to the outer overlay */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px; /* Gives your full-scale art breathing room from screen edges */
+    box-sizing: border-box;
+}
+
+/* ── 🎭 FIXED: Hijack Video Mechanics for Images & GIFs ── */
+.lightbox-expanded-media {
+    /* Forcing a layout container lock that strips out native image sizing logic */
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    /* 
+    This combination strips out native layout calculations and forces 
+    the browser's engine to calculate the image exactly like a video player 
+  */
+    object-fit: contain;
+    flex-shrink: 1;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    background-color: transparent;
+    display: block;
+}
+
+/* Float metadata overlay HUD */
+.lightbox-meta-title {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffffff;
+    font-family: var(--font-interface);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 8px 20px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 100002;
+}
+
+/* Close button positioning */
+.lightbox-close-trigger {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    z-index: 100001;
+}
+
+    .lightbox-close-trigger:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+    }
+
+    .lightbox-close-trigger:active {
+        transform: scale(0.95);
+    }
+
+
+
+.vinyl-album-capsule:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+/* ── 💿 THE SKEUOMORPHIC VINYL ENGINE ── */
+.vinyl-sleeve-viewport {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    background: rgba(0,0,0,0.05);
+    border-radius: var(--border-radius-element);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 12px;
+    overflow: hidden;
+}
+
+.album-sleeve-art {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.2);
+    z-index: 3; /* Kept above the disk container */
+    transition: transform 0.2s ease;
+}
+
+.vinyl-record-disc {
+    position: absolute;
+    left: 30px;
+    width: 114px;
+    height: 114px;
+    background: radial-gradient(circle, #222 30%, #111 60%, #000 100%);
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.1), 2px 3px 8px rgba(0,0,0,0.3);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+    /* Grooves on vinyl effect */
+    .vinyl-record-disc::after {
+        content: '';
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        border: 1px dashed rgba(255,255,255,0.05);
+        border-radius: 50%;
+    }
+
+.vinyl-center-label {
+    width: 30px;
+    height: 30px;
+    background: var(--bg-window-active);
+    border-radius: 50%;
+    border: 2px solid #000;
+}
+
+/* Interactive slide out trigger calculation */
+.vinyl-album-capsule:hover .vinyl-record-disc {
+    transform: translateX(45px) rotate(45deg);
+}
+
+.track-counter-label {
+    font-size: 13px;
+    color: var(--text-muted);
+}

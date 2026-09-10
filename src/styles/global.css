@@ -1,0 +1,150 @@
+﻿/* ==========================================================================
+   THE STYLE SERVICE: Core Design System Tokens
+   ========================================================================== */
+
+/* --- ☀️ LIGHT MODE (Default Setup) --- */
+@font-face {
+    font-family: 'FutureTooLateYap';
+    src: url('./FutureTooLateYap.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* Tells the browser to render readable fallback text instantly while the heavy file downloads */
+}
+:root, [data-theme="light"] {
+    /* Desktop Base Colors */
+    --bg-desktop: #D3A786; /* Crisp, light gray-blue canvas */
+    --bg-window: #D3A796; /* Bright white window container background */
+    --bg-window-titlebar: #f1f3f5; /* Inactive window title header */
+    --bg-window-active: #3b5bdb; /* Slate blue active window focus color */
+    /* Text Styles */
+    --text-main: #212529; /* Charcoal body text */
+    --text-on-active: #ffffff; /* Clear white text over focus headers */
+    --text-muted: #868e96; /* Secondary text */
+    /* Modern Depth Shadows */
+    --shadow-window-idle: 0 10px 30px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-window-active: 0 20px 45px rgba(0, 0, 0, 0.22), 0 4px 12px rgba(59, 91, 219, 0.1);
+    --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+    --scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+}
+
+/* --- 🌙 DARK MODE MODULE --- */
+[data-theme="dark"] {
+    /* Desktop Base Colors */
+    --bg-desktop: #352A27; /* Deep midnight canvas backdrop */
+    --bg-window: #3F3735; /* Low-lit slate window container background */
+    --bg-window-titlebar: #2a3342; /* Darker frame title header */
+    --bg-window-active: #1064ea; /* Electric neon blue active window focus color */
+    /* Text Styles */
+    --text-main: #f8f9fa; /* Clean off-white body text */
+    --text-on-active: #ffffff; /* Clear white text over focus headers */
+    --text-muted: #adb5bd; /* Soft gray text */
+    /* Modern Depth Shadows */
+    --shadow-window-idle: 0 10px 30px rgba(0, 0, 0, 0.5), 0 1px 5px rgba(0, 0, 0, 0.3);
+    --shadow-window-active: 0 20px 45px rgba(0, 0, 0, 0.75), 0 4px 16px rgba(0, 0, 0, 0.4);
+    --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.35);
+}
+
+/* ==========================================================================
+   Structural Geometries (Shared by BOTH themes)
+   ========================================================================== */
+/* ==========================================================================
+   Structural Geometries (Shared by BOTH themes)
+   ========================================================================== */
+/* ==========================================================================
+   Structural Geometries (Shared by BOTH themes)
+   ========================================================================== */
+:root {
+    --font-interface: 'FutureTooLateYap', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-monospace: Consolas, "Liberation Mono", Courier, monospace;
+    /* ── 📏 SCALE UP ACCESSIBLE TYPOGRAPHY TOKENS ── */
+    --font-size-base: 24px; /* Bumping base text from 14px/16px to 18px */
+    --font-size-heading: 34px; /* Clean boost for subheadings */
+    --font-size-title: 67px; /* Giving your brand logo title plenty of breathing room */
+
+    --border-radius-window: 8px;
+    --border-radius-element: 4px;
+    --window-stroke: 1px solid rgba(0, 0, 0, 0.15);
+    --shadow-inset-element: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+    --layer-desktop: 1;
+    --layer-window-idle: 10;
+    --layer-window-active: 100;
+    --layer-taskbar: 1000;
+}
+
+/* ==========================================================================
+   Global Reset & Environment Setup (Consuming Theme Tokens)
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html, #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-interface);
+    font-size: var(--font-size-base); /* Apply larger base font globally */
+    background-color: var(--bg-desktop);
+    color: var(--text-main);
+    transition: background-color 0.25s ease, color 0.2s ease;
+}
+
+/* Force standard tags inside any future widgets/modules to scale cleanly */
+p, span, button, input {
+    font-size: var(--font-size-base);
+    line-height: 1.4;
+}
+
+h3, h4 {
+    font-size: var(--font-size-heading);
+    margin-bottom: 8px;
+}
+
+
+/* ==========================================================================
+   Global Reset & Environment Setup (Consuming Theme Tokens)
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html, #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent background viewport scrolling entirely */
+    font-family: var(--font-interface);
+    background-color: var(--bg-desktop);
+    color: var(--text-main);
+    transition: background-color 0.25s ease, color 0.2s ease; /* Silky smooth color swapping */
+}
+
+/* ==========================================================================
+   Modular Custom Scrollbars (Now adapting to themes automatically)
+   ========================================================================== */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: var(--border-radius-element);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: var(--border-radius-element);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: var(--scrollbar-thumb-hover);
+        border: 2px solid transparent;
+        background-clip: padding-box;
+    }

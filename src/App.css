@@ -1,0 +1,195 @@
+﻿/* ==========================================================================
+   Desktop Grid Canvas Framework
+   ========================================================================== */
+
+.desktop-environment {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    padding: 24px;
+}
+
+/* Base Top Actions Row */
+.desktop-header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none; /* Allows click-through logic to background layers */
+    /* ── 🚀 FIXED: Hardcoded depth integer clears the code warning instantly ── */
+    position: relative;
+    z-index: 500; /* Flat value that sit safely above your active window layer (100) and below your taskbar (1000) */
+}
+
+.desktop-brand-title {
+    font-family: var(--font-interface); /* Explicitly force your font module onto the brand text */
+    font-size: var(--font-size-title); /* Apply the scaled-up title variable */
+    font-weight: 500;
+    color: var(--text-main);
+    opacity: 0.95; /* Turn the visibility up a tiny bit for extra contrast */
+}
+
+
+/* Interactive Controls Toggle HUD */
+.desktop-theme-toggle {
+    pointer-events: auto; /* Re-enables clicking for this specific child */
+    padding: 8px 16px;
+    background-color: var(--bg-window);
+    color: var(--text-main);
+    border: var(--window-stroke);
+    border-radius: var(--border-radius-element);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-window-idle);
+    transition: transform 0.1s ease, background-color 0.2s;
+    font-family: var(--font-interface);
+}
+
+    .desktop-theme-toggle:hover {
+        transform: translateY(-1px);
+    }
+
+    .desktop-theme-toggle:active {
+        transform: translateY(1px);
+    }
+
+/* ==========================================================================
+   👤 ABOUT & COMMUNICATION TERMINAL STYLING RULES
+   ========================================================================== */
+
+.about-terminal-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: var(--font-interface);
+}
+
+.about-profile-hero h3 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.profile-subtitle-tag {
+    font-size: 13px;
+    color: var(--bg-window-active);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.about-bio-text {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* Contact Sheet Blocks */
+.about-contact-matrix {
+    background: rgba(0, 0, 0, 0.03);
+    border: var(--window-stroke);
+    border-radius: var(--border-radius-element);
+    padding: 14px;
+}
+
+[data-theme="dark"] .about-contact-matrix {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.about-contact-matrix h4 {
+    font-size: 15px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 4px;
+}
+
+[data-theme="dark"] .about-contact-matrix h4 {
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.contact-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 4px 0;
+}
+
+    .contact-row a {
+        color: var(--bg-window-active);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .contact-row a:hover {
+            text-decoration: underline;
+        }
+
+.status-indicator-active {
+    color: #2b8a3e; /* Clear vibrant online green */
+    font-weight: 700;
+}
+
+[data-theme="dark"] .status-indicator-active {
+    color: #40c057; /* Luminescent green for dark mode workstation frames */
+}
+
+/* Base Specs Subtext */
+.about-site-specs {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    border-left: 2px solid var(--bg-window-titlebar);
+    padding-left: 10px;
+}
+
+/* ==========================================================================
+   Internal Blueprint Placeholders (Mock Assets)
+   ========================================================================== */
+
+.mock-product-card, .mock-portfolio-item {
+    border: var(--window-stroke);
+    border-radius: var(--border-radius-element);
+    padding: 12px;
+    margin-top: 12px;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.mock-buy-btn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    background-color: var(--bg-window-active);
+    color: var(--text-on-active);
+    border: none;
+    border-radius: var(--border-radius-element);
+    cursor: pointer;
+    font-size: 12px;
+    font-family: var(--font-interface);
+}
+
+.mock-progress-bar {
+    height: 4px;
+    background: var(--bg-window-active);
+    width: 75%;
+    margin-top: 8px;
+    border-radius: 2px;
+}
+
+/* Simple Fixed Quick-Launch Tray */
+.desktop-taskbar {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: var(--layer-taskbar);
+}
+
+    .desktop-taskbar button {
+        padding: 6px 14px;
+        background-color: var(--bg-window-titlebar);
+        color: var(--text-main);
+        border: var(--window-stroke);
+        border-radius: var(--border-radius-element);
+        cursor: pointer;
+        font-weight: 500;
+        font-family: var(--font-interface);
+    }

@@ -1,0 +1,78 @@
+.window-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-window);
+    border: var(--window-stroke);
+    border-radius: var(--border-radius-window);
+    box-shadow: var(--shadow-window-idle);
+    overflow: hidden;
+    will-change: transform; /* Hint to the browser's engine for high FPS drag smoothness */
+}
+
+    /* Focused active layout shadow state */
+    .window-frame.window-active {
+        box-shadow: var(--shadow-window-active);
+    }
+
+/* Drag bar asset */
+.window-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background-color: var(--bg-window-titlebar);
+    cursor: move; /* Changes pointer to crosshairs icon on hover */
+    user-select: none;
+    border-bottom: var(--window-stroke);
+}
+
+/* Active window title highlights */
+.window-active .window-titlebar {
+    background-color: var(--bg-window-active);
+}
+
+.window-title-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.window-active .window-title-text {
+    color: var(--text-on-active);
+}
+
+/* Control actions layout */
+.window-controls {
+    display: flex;
+    gap: 6px;
+}
+
+.window-btn {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    cursor: pointer;
+    background-color: #ff5f56; /* Soft modern action default red button */
+    color: transparent;
+    transition: color 0.15s ease;
+}
+
+.window-titlebar:hover .window-btn {
+    color: rgba(0, 0, 0, 0.6); /* Reveal close icon only on window focus/hover */
+}
+
+/* Content wrapper box logic */
+.window-content {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto; /* Activates our theme's custom-scrollbar instantly if text overflows */
+    color: var(--text-main);
+}

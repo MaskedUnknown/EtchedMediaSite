@@ -1,0 +1,174 @@
+﻿.game-cinematic-hub {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 16px;
+    animation: hubFadeIn 0.2s ease-out;
+}
+
+@keyframes hubFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hub-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .hub-navigation {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.hub-back-btn {
+    background: none;
+    border: none;
+    color: var(--bg-window-active);
+    font-family: var(--font-interface);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.hub-category-tag {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Widescreen Grid Alignment Split */
+.hub-split-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 20px;
+    align-items: start; /* Align columns cleanly side-by-side */
+    flex: 1;
+}
+
+.hub-media-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hub-details-column {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 100%;
+}
+
+/* ── 🎭 STACKED OVERLAY VIEWPORT MATRICES ── */
+.parallax-mask-viewport {
+    position: relative;
+    width: 100%;
+    height: 250px; /* Tall, premium canvas profile scale */
+    background-color: #000;
+    border-radius: var(--border-radius-window);
+    overflow: hidden;
+    border: var(--window-stroke);
+}
+
+.parallax-background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Forces the video trailer to fill out the backdrop dimensions */
+    pointer-events: none;
+    transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+}
+
+.parallax-foreground-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, var(--bg-window) 100%),
+              linear-gradient(to right, rgba(0,0,0,0) 70%, var(--bg-window) 100%);
+  background-size: cover;
+}
+
+.preview-subtext-label {
+    font-size: 13px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+/* Details Column Polish */
+.hub-game-title {
+    margin: 0 0 4px 0;
+}
+
+.hub-status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(16, 100, 234, 0.08);
+    color: var(--bg-window-active);
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hub-game-desc {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.hub-specs-matrix {
+    background: rgba(0,0,0,0.03);
+    border: var(--window-stroke);
+    border-radius: var(--border-radius-element);
+    padding: 12px;
+    font-size: 14px;
+}
+
+[data-theme="dark"] .hub-specs-matrix {
+    background: rgba(255,255,255,0.02);
+}
+
+.spec-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+}
+
+    .spec-row:not(:last-child) {
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+/* Purchase Tray Layout */
+.hub-purchase-widget {
+    margin-top: auto; /* Pin checkout anchor widget cleanly to base line rows */
+    background: rgba(0, 0, 0, 0.02);
+    padding: 16px;
+    border-radius: var(--border-radius-element);
+    border: var(--window-stroke);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+[data-theme="dark"] .hub-purchase-widget {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.pricing-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
