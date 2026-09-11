@@ -66,7 +66,7 @@ export function GameShowcase({ game, onBack }) {
                     </div>
 
                     <p className="hub-game-desc">
-                        Experience the complete digital release package. Includes unrestricted access to full asset structures, deployment archives, and production manifest trees.
+                        ↓ Fund-me / Steam buy-link (if available) is found below! ↓
                     </p>
 
                     {/* Steam routing checkout panel box */}
@@ -75,16 +75,24 @@ export function GameShowcase({ game, onBack }) {
                             <span className="pricing-label">Digital License Marketplace</span>
                         </div>
                         {/* Redirect button text updated with an empty click execution payload */}
-                        <DynamicButton
-                            variant="primary"
-                            showBlobs={true}
-                            onClick={() => console.log('Steam store routing initialized... (Empty Link Context)')}
+                        <script async
+                            src="https://js.stripe.com/v3/buy-button.js">
+                        </script>
+
+                        <stripe-buy-button
+                            buy-button-id="buy_btn_1UEYiYHZsJgtV6rdsZQTX90G"
+                            publishable-key="pk_live_51Rui2pHZsJgtV6rdbodLtPdwVIvZfDuPpzMRy5cRVqMy5nZllwBBY1hCc3zOdMNEbaw3OrmFc8d5gWRX4tKf1kAD005S7633vn"
                         >
-                            Redirect to Steam Purchase Page
-                        </DynamicButton>
+                        </stripe-buy-button>
+                        {/*<DynamicButton*/}
+                        {/*    variant="primary"*/}
+                        {/*    showBlobs={true}*/}
+                        {/*    onClick={() => console.log('Steam store routing initialized... (Empty Link Context)')}*/}
+                        {/*>*/}
+                        {/*    Redirect to Steam Purchase Page*/}
+                        {/*</DynamicButton>*/}
                     </div>
                 </div>
-
             </div>
         </div>
     );
