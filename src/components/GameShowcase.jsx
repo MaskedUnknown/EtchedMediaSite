@@ -75,10 +75,6 @@ export function GameShowcase({ game, onBack }) {
                             <span className="pricing-label">Digital License Marketplace</span>
                         </div>
                         {/* Redirect button text updated with an empty click execution payload */}
-                        <script async
-                            src="https://js.stripe.com/v3/buy-button.js">
-                        </script>
-
                         <stripe-buy-button
                             buy-button-id="buy_btn_1UEYiYHZsJgtV6rdsZQTX90G"
                             publishable-key="pk_live_51Rui2pHZsJgtV6rdbodLtPdwVIvZfDuPpzMRy5cRVqMy5nZllwBBY1hCc3zOdMNEbaw3OrmFc8d5gWRX4tKf1kAD005S7633vn"
