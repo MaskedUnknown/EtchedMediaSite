@@ -15,7 +15,7 @@ export const sanitizeInput = (text) => {
 
 // 2. Origin Check (Ensures payment/critical widgets only proceed on your allowed domain)
 export const isSecureOrigin = () => {
-    const allowedOrigins = ['localhost', 'yourdomain.com']; // Update with your actual domain later
+    const allowedOrigins = ['localhost', 'https://etchedmediasite.netlify.app/'];
     const currentHostname = window.location.hostname;
 
     return allowedOrigins.includes(currentHostname);
@@ -24,6 +24,6 @@ export const isSecureOrigin = () => {
 // 3. Simple Integrity Logger
 export const logSecurityAudit = (actionName) => {
     const timestamp = new Date().toISOString();
-    // In production, you could pipe this to a light telemetry service
+    // In production, I could pipe this to a light telemetry service
     console.log(`[Security Audit] Action: ${actionName} verified at ${timestamp}`);
 };
